@@ -1,0 +1,208 @@
+/* Lex-Assist Global Styles */
+:root {
+    /* Semantic Colors - Keeping these effectively constant or using slight transparency */
+    --primary: var(--primary-color);
+    --risk-high: #D32F2F;
+    --risk-medium: #FFA000;
+    --compliance-safe: #2E7D32;
+
+    /* Adaptive Variables based on Streamlit Theme */
+    --bg-card: var(--secondary-background-color);
+    --border-color: rgba(150, 150, 150, 0.2);
+    /* Subtle adaptive border */
+    --font-legal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Base App Styling */
+.stApp {
+    /* Background handled by Streamlit automatically */
+    font-family: var(--font-legal);
+}
+
+/* Minimize top padding to move header up but keep it visible */
+.block-container {
+    padding-top: 3.5rem !important;
+    padding-bottom: 2rem !important;
+}
+
+/* Increase font size for navigation buttons in the main area */
+/* This targets buttons in the main content/header, excluding sidebar */
+.main .stButton>button {
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+}
+
+/* Sidebar Styling */
+section[data-testid="stSidebar"] {
+    /* Background handled by Streamlit automatically */
+    border-right: 1px solid var(--border-color);
+}
+
+.css-1d391kg {
+    /* Sidebar Title */
+    font-family: var(--font-legal);
+    font-weight: 600;
+}
+
+/* Typography Overrides */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-legal) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px;
+    /* Color handled by Streamlit (var(--text-color)) */
+}
+
+p,
+span,
+div {
+    font-family: var(--font-legal);
+}
+
+/* Custom Card Container */
+div.legal-card {
+    background-color: var(--bg-card);
+    padding: 1.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    /* Reduced shadow opacity for light mode compatibility */
+}
+
+div.legal-card h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+    opacity: 0.8;
+    /* Replaces --text-secondary */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Streamlit Widget Overrides */
+div.stButton>button {
+    /* Use Primary Color but potentially tint it? 
+       Default Streamlit buttons are usually fine, but let's keep the custom filled look 
+       if we can ensure text contrast. */
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+    font-weight: 500;
+    width: 100%;
+}
+
+div.stButton>button:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    /* Ghost button effect on hover might be safer than forced background */
+    background-color: transparent;
+}
+
+
+div[data-baseweb="select"]>div {
+    /* Let Streamlit handle input backgrounds */
+    border-color: var(--border-color);
+}
+
+/* Metric Containers */
+div[data-testid="stMetricValue"] {
+    font-size: 1.8rem;
+    color: var(--text-color);
+}
+
+div[data-testid="stMetricLabel"] {
+    opacity: 0.7;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+/* Remove default streamlit branding/hamburger */
+/* Remove default streamlit branding/hamburger - specific elements only if needed */
+/* Unhiding header to allow sidebar toggle to be visible */
+/* 
+#MainMenu {
+    visibility: hidden;
+}
+
+header {
+    visibility: hidden;
+}
+*/
+
+footer {
+    visibility: hidden;
+}
+
+/* Status Indicators */
+.status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.status-high {
+    background-color: var(--risk-high);
+}
+
+.status-medium {
+    background-color: var(--risk-medium);
+}
+
+.status-safe {
+    background-color: var(--compliance-safe);
+}
+
+/* Typography for legal text readability */
+.legal-text {
+    font-family: "Georgia", serif;
+    line-height: 1.6;
+    font-size: 1rem;
+    /* color: handled automatically */
+}
+
+/* Increase font size for navigation buttons in the main area */
+/* This targets buttons in the main content/header, excluding sidebar */
+/* Increase font size for navigation buttons in the main area */
+/* This targets buttons in the main content/header, excluding sidebar */
+.main .stButton>button {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    padding: 1.2rem 2rem !important;
+    height: auto !important;
+    border-radius: 50px !important;
+    /* Pill shape */
+    background: linear-gradient(145deg, #1e212b, #252936) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), -5px -5px 10px rgba(255, 255, 255, 0.05) !important;
+    color: #e0e0e0 !important;
+    transition: all 0.3s ease !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.main .stButton>button:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 0 20px rgba(44, 116, 179, 0.5) !important;
+    /* Blue Glow */
+    border-color: #2C74B3 !important;
+    color: #fff !important;
+    background: linear-gradient(145deg, #1e212b, #2a2e3d) !important;
+}
+
+.main .stButton>button:active,
+.main .stButton>button:focus:not(:focus-visible) {
+    background: linear-gradient(135deg, #2C74B3 0%, #1a4971 100%) !important;
+    /* Active Blue Gradient */
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.3) !important;
+    color: white !important;
+    border: none !important;
+    transform: translateY(1px);
+}
