@@ -2,20 +2,39 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 
+if "uploaded_docs" not in st.session_state:
+    st.session_state.uploaded_docs = []
+if "doc_embeddings" not in st.session_state:
+    st.session_state.doc_embeddings = {}
+
 def show():
     st.title("Document Workspace")
     
     # --- Upload Section ---
     with st.expander("📄 Upload New Document", expanded=True):
-        st.file_uploader("Drag and drop legal documents here (PDF, DOCX, TXT)", accept_multiple_files=True)
+        uploaded_files = st.file_uploader("Drag and drop legal documents here (PDF, DOCX, TXT)", accept_multiple_files=True)
         c1, c2 = st.columns([1, 1])
         with c1:
-            st.selectbox("Document Classification", ["Agreement", "Vakalatnama", "ITR/GST", "Financials", "Legal Notice"], key="doc_class")
+            doc_class = st.selectbox("Document Classification", ["Agreement", "Vakalatnama", "ITR/GST", "Financials", "Legal Notice"], key="doc_class")
         with c2:
-            st.text_input("Client Reference / Case ID", placeholder="e.g., CASE-2024-001")
+            case_id = st.text_input("Client Reference / Case ID", placeholder="e.g., CASE-2024-001")
         
         if st.button("Process & Auto-Tag"):
-            st.toast("Document uploaded and sent to OCR engine.", icon="⏳")
+            if uploaded_files:
+                for file in uploaded_files:
+                    content = file.read().decode('utf-8', errors='ignore') if file.type == 'text/plain' else str(file.read())
+                    st.session_state.uploaded_docs.append({
+                        "name": file.name,
+                        "type": doc_class,
+                        "case_id": case_id,
+                        "content": content,
+                        "uploaded_at": datetime.now()
+                    })
+                    st.session_state.doc_embeddings[file.name] = content
+                st.success(f"✅ {len(uploaded_files)} document(s) uploaded and indexed for RAG")
+                st.rerun()
+            else:
+                st.warning("Please upload files first")
 
     st.markdown("---")
 
@@ -61,4 +80,26 @@ def show():
                     st.toast(f"Menu actions for {doc['Name']} are currently disabled in this demo.", icon="🚧")
             
             st.markdown("---")
+    
+    # --- RAG Query Section ---
+    if st.session_state.uploaded_docs:
+        st.markdown("---")
+        st.subheader("🤖 Ask Questions (RAG)")
+        query = st.text_input("💬 Ask about your uploaded documents")
+        
+        if st.button("Search") and query:
+            # Simple keyword search in documents
+            results = []
+            for doc in st.session_state.uploaded_docs:
+                if query.lower() in doc["content"].lower():
+                    results.append(doc["name"])
+            
+            if results:
+                st.success(f"Found in: {', '.join(results)}")
+                for doc in st.session_state.uploaded_docs:
+                    if doc["name"] in results:
+                        snippet = doc["content"][:200]
+                        st.info(f"**{doc['name']}**: {snippet}...")
+            else:
+                st.warning("No matches found in uploaded documents")
 
